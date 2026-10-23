@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Scroll through the Git Volatility Timeline on the right, see the commit history rhythm, and see affected files highlight.
   Commit: `Add Git Volatility Timeline and commit rhythm visualization`
 
-- [ ] **4. Live Git shallow clone analyzer and error fallback**
+- [x] **4. Live Git shallow clone analyzer and error fallback**
   Becomes usable: Entering any live public GitHub repository URL (e.g. `tiangolo/fastapi`) performs a real-time shallow clone (`git clone --depth 50`), analyzes git logs via subprocess, and renders live debt metrics. If an invalid or private repo is entered, the inline `ErrorBanner` drops down with 1-click fallback.
   Why now: Bridges the app from pre-cached demos to live public repo analysis, validating the core technical risk (subprocess git execution and error recovery).
   PRD ref: `prd.md > The Core Journey` (Step 2), `prd.md > States and Boundaries` (Error State)

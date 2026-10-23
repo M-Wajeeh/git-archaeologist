@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CommandHeader } from './components/CommandHeader';
 import { DebtMatrix } from './components/DebtMatrix';
 import { VolatilityTimeline } from './components/VolatilityTimeline';
+import { InspectorDrawer } from './components/InspectorDrawer';
 import { analyzeRepository } from './services/api';
 import { AnalysisResult, FileHotspot, CommitInfo } from './types';
 import { GitBranch, AlertCircle, Layers, FileCode2 } from 'lucide-react';
@@ -163,6 +164,12 @@ export const App: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sliding Inspector Drawer */}
+        <InspectorDrawer
+          file={selectedFile}
+          onClose={() => setSelectedFile(null)}
+        />
       </main>
     </div>
   );
