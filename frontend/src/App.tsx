@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CommandHeader } from './components/CommandHeader';
+import { DebtMatrix } from './components/DebtMatrix';
 import { analyzeRepository } from './services/api';
-import { AnalysisResult } from './types';
+import { AnalysisResult, FileHotspot } from './types';
 import { GitBranch, AlertTriangle, Layers, FileCode2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -10,12 +11,14 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingStage, setLoadingStage] = useState<string>('');
   const [error, setError] = useState<{ message: string; code?: string } | null>(null);
+  const [selectedFile, setSelectedFile] = useState<FileHotspot | null>(null);
 
   // Trigger analysis on repository select or search
   const handleAudit = async (repoUrl: string) => {
     setIsLoading(true);
     setError(null);
     setActiveRepo(repoUrl);
+    setSelectedFile(null);
 
     try {
       setLoadingStage('Cloning latest 50 commits...');
@@ -122,15 +125,14 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Placeholder Cockpit Body for Slice 1 */}
+        {/* Cockpit Main Panel: The Architectural Debt Matrix */}
         {analysis && (
-          <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-6 text-center space-y-3">
-            <h2 className="text-base font-semibold text-slate-200">
-              Cockpit Shell Ready: {analysis.repo_name}
-            </h2>
-            <p className="text-sm text-slate-400 max-w-lg mx-auto">
-              Backend API communication verified. {analysis.files.length} files parsed with churn and author metrics. Ready for Slice 2: Architectural Debt Matrix table.
-            </p>
+          <div className="grid grid-cols-1 gap-6">
+            <DebtMatrix
+              files={analysis.files}
+              selectedFile={selectedFile}
+              onSelectFile={(file) => setSelectedFile(file)}
+            />
           </div>
         )}
       </main>

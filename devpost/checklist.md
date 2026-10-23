@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. Bootstrap full-stack cockpit with command header and pre-baked audit engine**
+- [x] **1. Bootstrap full-stack cockpit with command header and pre-baked audit engine**
   Becomes usable: The user can start the FastAPI backend and React frontend, open the cockpit at `http://localhost:5173`, see the Command Header with 3 quick-load pills (`flask`, `fastapi`, `express`), click a pill, and see the repository statistics and file count update with zero latency.
   Why now: Bootstraps the full-stack plumbing (FastAPI + Vite React + dev proxy) and immediately proves end-to-end communication with instant demo data, so no later slice builds on speculation.
   PRD ref: `prd.md > The Core Journey` (steps 1-3), `prd.md > Command Header & Repository Ingestion`
