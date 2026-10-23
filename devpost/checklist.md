@@ -49,7 +49,7 @@ Build mode: fast
   Learner check: Paste a public GitHub URL in the header and press Enter to see it clone and analyze live, then test typing `https://github.com/nonexistent/fake-repo-xyz` to see the error banner drop down with the fallback button.
   Commit: `Add live git shallow clone analyzer with automated error banner fallback`
 
-- [ ] **5. Inspector Drawer and AI Architectural Diagnosis with heuristic fallback**
+- [x] **5. Inspector Drawer and AI Architectural Diagnosis with heuristic fallback**
   Becomes usable: Clicking any hotspot file in the Debt Matrix smoothly slides out the Inspector Drawer from the right with backdrop blur, displaying micro-stats, recent commit history for that file, and a formatted AI diagnosis explaining why it is debt plus 2 concrete refactoring steps (using Gemini API or instant rule-based fallback).
   Why now: Delivers the "aha!" climax of the product journey—providing actionable plain-English architectural remediation right inside the cockpit.
   PRD ref: `prd.md > Inspector Drawer & AI Architectural Diagnosis`, `prd.md > The Core Journey` (Steps 5-7)
@@ -81,3 +81,5 @@ Reflection: [offered/answered/declined/already covered — personal answer belon
 Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
 
 ## Revisions
+
+- Redesigned complete application interface from dark mode to a clean, crisp, high-contrast light theme with solid developer colors — user requested a clean light theme without dark AI-generated gradient shades.
