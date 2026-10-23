@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Terminal, Search, Play, Sparkles, CheckCircle2 } from 'lucide-react';
+import { GitPullRequest, Search, Play, Check } from 'lucide-react';
 
 interface CommandHeaderProps {
   onSearch: (repoUrl: string) => void;
@@ -9,9 +9,9 @@ interface CommandHeaderProps {
 }
 
 const DEMO_REPOS = [
-  { label: 'pallets/flask', slug: 'pallets/flask', desc: 'Python WSGI' },
-  { label: 'fastapi/fastapi', slug: 'tiangolo/fastapi', desc: 'Python ASGI' },
-  { label: 'expressjs/express', slug: 'expressjs/express', desc: 'Node.js Web' },
+  { label: 'pallets/flask', slug: 'pallets/flask', lang: 'Python' },
+  { label: 'fastapi/fastapi', slug: 'tiangolo/fastapi', lang: 'Python' },
+  { label: 'expressjs/express', slug: 'expressjs/express', lang: 'JavaScript' },
 ];
 
 export const CommandHeader: React.FC<CommandHeaderProps> = ({
@@ -48,70 +48,68 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
   };
 
   return (
-    <header className="relative bg-slate-900 border-b border-slate-800 px-6 py-3.5 z-20 shadow-lg">
-      {/* Top Border Progress Shimmer */}
+    <header className="bg-zinc-950 border-b border-zinc-800 text-zinc-100 sticky top-0 z-20">
+      {/* Top linear progress bar (solid blue, no gradients) */}
       {isLoading && (
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-slate-800 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-transparent via-cyan-400 to-transparent w-1/2 animate-shimmer" />
+        <div className="h-0.5 w-full bg-zinc-800 overflow-hidden">
+          <div className="h-full bg-blue-500 animate-[pulse_1s_infinite] w-full" />
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Brand Identity */}
+      <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Brand identity - Developer tool style */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-lg bg-slate-800 border border-slate-700/80 flex items-center justify-center text-cyan-400 shadow-inner">
-            <Terminal className="w-5 h-5" />
+          <div className="w-8 h-8 rounded border border-zinc-700 bg-zinc-900 flex items-center justify-center text-zinc-300">
+            <GitPullRequest className="w-4 h-4 text-blue-400" />
           </div>
-          <div>
+          <div className="leading-tight">
             <div className="flex items-center gap-2">
-              <span className="font-mono font-semibold tracking-tight text-white text-base">
+              <span className="font-mono font-bold text-sm text-zinc-100 tracking-tight">
                 git-archaeologist
               </span>
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/50">
-                PoC
+              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                Audit
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-sans">
-              Architectural Debt Heatmap & Git Timeline
+            <p className="text-[11px] text-zinc-400 font-sans">
+              Architectural Debt & Git Volatility Inspector
             </p>
           </div>
         </div>
 
-        {/* Central Search Command Bar */}
-        <form onSubmit={handleSubmit} className="flex-1 max-w-xl w-full">
+        {/* Search Command Input */}
+        <form onSubmit={handleSubmit} className="flex-1 max-w-lg w-full">
           <div className="relative flex items-center">
-            <div className="absolute left-3.5 text-slate-500 pointer-events-none">
-              <Search className="w-4 h-4" />
-            </div>
+            <Search className="w-4 h-4 absolute left-3 text-zinc-500 pointer-events-none" />
             <input
               ref={inputRef}
               type="text"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
-              placeholder="Paste public GitHub URL (e.g. pallets/flask)..."
+              placeholder="e.g. pallets/flask or github.com/owner/repo"
               disabled={isLoading}
-              className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500/80 rounded-lg pl-10 pr-24 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 font-mono transition-all"
+              className="w-full bg-zinc-900 border border-zinc-700 hover:border-zinc-600 focus:border-blue-500 rounded-md pl-9 pr-24 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 font-mono focus:outline-none transition-colors"
             />
-            <div className="absolute right-2 flex items-center gap-1.5">
-              <kbd className="hidden sm:inline-block text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700 rounded px-1.5 py-0.5">
+            <div className="absolute right-1.5 flex items-center gap-1.5">
+              <kbd className="hidden sm:inline-block text-[10px] font-mono bg-zinc-800 text-zinc-400 border border-zinc-700 rounded px-1.5 py-0.5">
                 ⌘K
               </kbd>
               <button
                 type="submit"
                 disabled={isLoading || !inputVal.trim()}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 border border-cyan-500/30 disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-40 transition-colors"
               >
-                <Play className="w-3 h-3 fill-current" />
-                Audit
+                <Play className="w-2.5 h-2.5 fill-current" />
+                Analyze
               </button>
             </div>
           </div>
         </form>
 
-        {/* 3 Quick-Load Demo Pills */}
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[11px] uppercase tracking-wider text-slate-500 font-mono hidden lg:inline">
-            Demos:
+        {/* Demo Repositories */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="text-[11px] font-mono text-zinc-500 uppercase mr-1">
+            Samples:
           </span>
           {DEMO_REPOS.map((demo) => {
             const isActive = activeRepo === demo.slug || activeRepo === demo.label;
@@ -121,14 +119,13 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
                 type="button"
                 onClick={() => onSearch(demo.slug)}
                 disabled={isLoading}
-                title={`Load ${demo.desc} repository snapshot`}
-                className={`text-xs font-mono px-2.5 py-1 rounded-md border transition-all flex items-center gap-1.5 ${
+                className={`text-xs font-mono px-2.5 py-1 rounded border transition-colors flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-slate-800 text-cyan-300 border-cyan-500/50 shadow-sm'
-                    : 'bg-slate-950/60 hover:bg-slate-800/80 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
+                    ? 'bg-zinc-800 text-blue-400 border-blue-500/60 font-semibold'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border-zinc-700/80'
                 }`}
               >
-                {isActive && <CheckCircle2 className="w-3 h-3 text-cyan-400" />}
+                {isActive && <Check className="w-3 h-3 text-blue-400" />}
                 {demo.label.split('/')[1]}
               </button>
             );
@@ -136,14 +133,14 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
         </div>
       </div>
 
-      {/* Dynamic Status Notification under search during Loading */}
+      {/* Clean status bar during loading (no sparkles or spinners) */}
       {isLoading && (
-        <div className="max-w-7xl mx-auto mt-2 pt-2 border-t border-slate-800/50 flex items-center justify-between text-xs text-slate-400 font-mono animate-pulse">
+        <div className="bg-zinc-900 border-t border-zinc-800 px-6 py-1.5 text-xs font-mono text-zinc-400 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
-            <span>{loadingStage || 'Processing repository commits...'}</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+            <span>{loadingStage || 'Analyzing repository commits...'}</span>
           </div>
-          <span className="text-slate-500 text-[11px]">Depth: 50 commits</span>
+          <span className="text-zinc-500">History window: 50 commits</span>
         </div>
       )}
     </header>

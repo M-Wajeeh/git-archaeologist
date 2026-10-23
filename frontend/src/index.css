@@ -8,22 +8,23 @@
 
 body {
   margin: 0;
-  background-color: #06090e;
+  background-color: #09090b;
+  color: #f4f4f5;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Custom scrollbars for the Cockpit */
+/* Crisp scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #18181b;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 3px;
+  background: #27272a;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #3f3f46;
 }
