@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CommandHeader } from './components/CommandHeader';
 import { DebtMatrix } from './components/DebtMatrix';
+import { VolatilityTimeline } from './components/VolatilityTimeline';
 import { analyzeRepository } from './services/api';
-import { AnalysisResult, FileHotspot } from './types';
+import { AnalysisResult, FileHotspot, CommitInfo } from './types';
 import { GitBranch, AlertCircle, Layers, FileCode2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -12,6 +13,7 @@ export const App: React.FC = () => {
   const [loadingStage, setLoadingStage] = useState<string>('');
   const [error, setError] = useState<{ message: string; code?: string } | null>(null);
   const [selectedFile, setSelectedFile] = useState<FileHotspot | null>(null);
+  const [highlightedPaths, setHighlightedPaths] = useState<string[]>([]);
 
   // Trigger analysis on repository select or search
   const handleAudit = async (repoUrl: string) => {
@@ -19,6 +21,7 @@ export const App: React.FC = () => {
     setError(null);
     setActiveRepo(repoUrl);
     setSelectedFile(null);
+    setHighlightedPaths([]);
 
     try {
       setLoadingStage('Fetching 50 commits...');
@@ -41,6 +44,19 @@ export const App: React.FC = () => {
       setIsLoading(false);
       setLoadingStage('');
     }
+  };
+
+  // Cross-highlight files when hovering commits in the timeline
+  const handleHoverCommit = (commit: CommitInfo | null) => {
+    if (!commit || !analysis) {
+      setHighlightedPaths([]);
+      return;
+    }
+    // Find files modified in this commit
+    const matchingPaths = analysis.files
+      .filter((file) => file.recent_commits?.some((c) => c.hash.startsWith(commit.hash.slice(0, 6))))
+      .map((f) => f.path);
+    setHighlightedPaths(matchingPaths);
   };
 
   // Auto-load flask demo on initial mount
@@ -125,14 +141,26 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Cockpit Main Panel: The Architectural Debt Matrix */}
+        {/* The Split Cockpit View: Matrix (Left) + Timeline (Right) */}
         {analysis && (
-          <div className="grid grid-cols-1 gap-6">
-            <DebtMatrix
-              files={analysis.files}
-              selectedFile={selectedFile}
-              onSelectFile={(file) => setSelectedFile(file)}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            {/* Left/Main: Debt Matrix */}
+            <div className="lg:col-span-7 xl:col-span-8">
+              <DebtMatrix
+                files={analysis.files}
+                selectedFile={selectedFile}
+                onSelectFile={(file) => setSelectedFile(file)}
+                highlightedPaths={highlightedPaths}
+              />
+            </div>
+
+            {/* Right/Secondary: Git Volatility Timeline */}
+            <div className="lg:col-span-5 xl:col-span-4">
+              <VolatilityTimeline
+                timeline={analysis.timeline}
+                onHoverCommit={handleHoverCommit}
+              />
+            </div>
           </div>
         )}
       </main>

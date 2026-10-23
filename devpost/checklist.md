@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Open `http://localhost:5173`, click the `pallets/flask` pill, and confirm the top-bar shimmer triggers and the repository name and file count appear in the cockpit.
   Commit: `Bootstrap full-stack app with command header and pre-baked audit engine`
 
-- [ ] **2. Architectural Debt Matrix table and sortable hotspots**
+- [x] **2. Architectural Debt Matrix table and sortable hotspots**
   Becomes usable: The Left Cockpit panel displays the full Architectural Debt Matrix—sorted by Debt Score (0–100), with colored risk bars (red/amber/green), churn counts, active author badges, and lines of code.
   Why now: Proves the core kernel early—turning raw commit metrics into an immediate visual debt matrix with clear visual hierarchy, rather than leaving core value for the end.
   PRD ref: `prd.md > Architectural Debt Matrix`, `prd.md > Main Cockpit (Split View)`
@@ -61,7 +61,7 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — Slice 2 (Debt Matrix with risk scoring and sorting interactive in browser)
+- [x] Early usable behavior explored — Slice 2 (Debt Matrix with risk scoring and sorting interactive in browser)
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
