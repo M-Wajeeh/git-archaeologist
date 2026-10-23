@@ -17,27 +17,27 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
   const maxFilesChanged = Math.max(...timeline.map((c) => c.files_changed_count || 1), 1);
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden flex flex-col h-full shadow-xs">
       {/* Panel Header */}
-      <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900">
+      <div className="px-4 py-3.5 border-b border-slate-200 bg-slate-50/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Activity className="w-4 h-4 text-zinc-400" />
-            <h3 className="font-mono text-sm font-semibold text-zinc-100">
+            <Activity className="w-4 h-4 text-blue-600" />
+            <h3 className="font-mono text-sm font-bold text-slate-900">
               Git Volatility Timeline
             </h3>
           </div>
-          <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+          <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-300 font-medium">
             {timeline.length} commits
           </span>
         </div>
-        <p className="text-xs text-zinc-400 mt-0.5">
+        <p className="text-xs text-slate-500 mt-0.5">
           Chronological commit rhythm across the 50-commit analysis window
         </p>
 
         {/* Clean Activity Sparkline / Rhythm Strip */}
-        <div className="mt-3 pt-2.5 border-t border-zinc-800/80">
-          <div className="flex items-end gap-1 h-9 w-full bg-zinc-950/70 p-1.5 rounded border border-zinc-800">
+        <div className="mt-3 pt-2.5 border-t border-slate-200">
+          <div className="flex items-end gap-1 h-9 w-full bg-slate-100 p-1.5 rounded border border-slate-200">
             {timeline.slice(0, 30).map((commit, idx) => {
               const heightPct = Math.max(
                 15,
@@ -59,17 +59,17 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
                   }}
                   className={`flex-1 rounded-sm cursor-pointer transition-colors ${
                     isHovered
-                      ? 'bg-blue-400'
+                      ? 'bg-blue-600'
                       : commit.files_changed_count >= 3
-                      ? 'bg-zinc-400 hover:bg-blue-400'
-                      : 'bg-zinc-700 hover:bg-zinc-500'
+                      ? 'bg-slate-400 hover:bg-blue-600'
+                      : 'bg-slate-300 hover:bg-slate-500'
                   }`}
                   style={{ height: `${heightPct}%` }}
                 />
               );
             })}
           </div>
-          <div className="flex justify-between text-[10px] font-mono text-zinc-500 mt-1 px-0.5">
+          <div className="flex justify-between text-[10px] font-mono text-slate-400 mt-1 px-0.5">
             <span>Older commits</span>
             <span>Recent commits</span>
           </div>
@@ -77,7 +77,7 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
       </div>
 
       {/* Chronological Commit Feed */}
-      <div className="flex-1 overflow-y-auto max-h-[460px] divide-y divide-zinc-800 font-mono text-xs">
+      <div className="flex-1 overflow-y-auto max-h-[460px] divide-y divide-slate-200 font-mono text-xs">
         {timeline.map((commit, idx) => {
           const isHovered = hoveredIndex === idx;
 
@@ -93,31 +93,31 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
                 onHoverCommit?.(null);
               }}
               className={`p-3 transition-colors cursor-default ${
-                isHovered ? 'bg-zinc-800/80' : 'hover:bg-zinc-800/40'
+                isHovered ? 'bg-blue-50/70' : 'hover:bg-slate-50'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-950 text-zinc-300 border border-zinc-700">
+                  <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200 font-medium">
                     {commit.hash.slice(0, 7)}
                   </span>
-                  <span className="text-zinc-400 text-[11px] flex items-center gap-1">
-                    <User className="w-3 h-3 text-zinc-500" />
+                  <span className="text-slate-600 text-[11px] flex items-center gap-1 font-sans font-medium">
+                    <User className="w-3 h-3 text-slate-400" />
                     {commit.author}
                   </span>
                 </div>
-                <span className="text-zinc-500 text-[10px] flex items-center gap-1 shrink-0">
+                <span className="text-slate-400 text-[10px] flex items-center gap-1 shrink-0 font-sans">
                   <Calendar className="w-3 h-3" />
                   {commit.date}
                 </span>
               </div>
 
-              <p className="text-xs text-zinc-200 mt-1.5 font-sans line-clamp-2 leading-relaxed">
+              <p className="text-xs text-slate-800 mt-1.5 font-sans line-clamp-2 leading-relaxed">
                 {commit.message}
               </p>
 
-              <div className="mt-1.5 flex items-center gap-1 text-[11px] text-zinc-400">
-                <GitCommit className="w-3 h-3 text-zinc-500" />
+              <div className="mt-1.5 flex items-center gap-1 text-[11px] text-slate-500 font-sans">
+                <GitCommit className="w-3 h-3 text-slate-400" />
                 <span>{commit.files_changed_count} file(s) modified</span>
               </div>
             </div>
