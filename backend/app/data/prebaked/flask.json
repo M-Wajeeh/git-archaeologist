@@ -1,0 +1,195 @@
+{
+  "repo_name": "pallets/flask",
+  "analyzed_commits": 50,
+  "total_files": 38,
+  "high_risk_files_count": 4,
+  "files": [
+    {
+      "path": "src/flask/app.py",
+      "debt_score": 94,
+      "risk_level": "critical",
+      "churn_count": 31,
+      "unique_authors": 8,
+      "lines": 1840,
+      "recent_commits": [
+        { "hash": "9c8e2b1", "author": "David Lord", "date": "2026-03-14", "message": "Refactor blueprint route registration and deferred setup hooks" },
+        { "hash": "3f4a1c0", "author": "Pallets Team", "date": "2026-03-02", "message": "Clean up async request dispatching context management" },
+        { "hash": "8d7e6f5", "author": "Alexandre", "date": "2026-02-18", "message": "Add type annotations to app configuration loader" },
+        { "hash": "1a2b3c4", "author": "Markus", "date": "2026-02-04", "message": "Fix CLI runner signal propagation edge case" }
+      ]
+    },
+    {
+      "path": "src/flask/blueprints.py",
+      "debt_score": 86,
+      "risk_level": "critical",
+      "churn_count": 24,
+      "unique_authors": 6,
+      "lines": 620,
+      "recent_commits": [
+        { "hash": "9c8e2b1", "author": "David Lord", "date": "2026-03-14", "message": "Refactor blueprint route registration and deferred setup hooks" },
+        { "hash": "7b8c9d0", "author": "Elena Rostova", "date": "2026-02-28", "message": "Handle nested blueprint URL prefix normalization" }
+      ]
+    },
+    {
+      "path": "src/flask/helpers.py",
+      "debt_score": 78,
+      "risk_level": "critical",
+      "churn_count": 19,
+      "unique_authors": 5,
+      "lines": 890,
+      "recent_commits": [
+        { "hash": "5e6f7a8", "author": "David Lord", "date": "2026-03-10", "message": "Deprecate legacy locked_cached_property utility" },
+        { "hash": "4c3b2a1", "author": "Kenji", "date": "2026-02-15", "message": "Improve send_from_directory mime-type resolution" }
+      ]
+    },
+    {
+      "path": "src/flask/sessions.py",
+      "debt_score": 71,
+      "risk_level": "critical",
+      "churn_count": 16,
+      "unique_authors": 5,
+      "lines": 410,
+      "recent_commits": [
+        { "hash": "2d3e4f5", "author": "Sarah Chen", "date": "2026-03-01", "message": "Enforce SameSite=Lax cookie attribute by default" }
+      ]
+    },
+    {
+      "path": "src/flask/templating.py",
+      "debt_score": 58,
+      "risk_level": "moderate",
+      "churn_count": 13,
+      "unique_authors": 4,
+      "lines": 310,
+      "recent_commits": [
+        { "hash": "6a7b8c9", "author": "David Lord", "date": "2026-02-22", "message": "Update Jinja context processor bridge" }
+      ]
+    },
+    {
+      "path": "src/flask/cli.py",
+      "debt_score": 52,
+      "risk_level": "moderate",
+      "churn_count": 11,
+      "unique_authors": 3,
+      "lines": 980,
+      "recent_commits": [
+        { "hash": "1a2b3c4", "author": "Markus", "date": "2026-02-04", "message": "Fix CLI runner signal propagation edge case" }
+      ]
+    },
+    {
+      "path": "src/flask/ctx.py",
+      "debt_score": 45,
+      "risk_level": "moderate",
+      "churn_count": 9,
+      "unique_authors": 3,
+      "lines": 480,
+      "recent_commits": [
+        { "hash": "3f4a1c0", "author": "Pallets Team", "date": "2026-03-02", "message": "Clean up async request dispatching context management" }
+      ]
+    },
+    {
+      "path": "src/flask/signals.py",
+      "debt_score": 28,
+      "risk_level": "low",
+      "churn_count": 4,
+      "unique_authors": 2,
+      "lines": 95,
+      "recent_commits": [
+        { "hash": "8f9e0a1", "author": "David Lord", "date": "2026-01-20", "message": "Add blinker deprecation warning fallback" }
+      ]
+    },
+    {
+      "path": "src/flask/globals.py",
+      "debt_score": 22,
+      "risk_level": "low",
+      "churn_count": 3,
+      "unique_authors": 1,
+      "lines": 72,
+      "recent_commits": [
+        { "hash": "7a6b5c4", "author": "David Lord", "date": "2026-01-12", "message": "Tidy local proxy definitions" }
+      ]
+    },
+    {
+      "path": "src/flask/config.py",
+      "debt_score": 34,
+      "risk_level": "low",
+      "churn_count": 5,
+      "unique_authors": 2,
+      "lines": 340,
+      "recent_commits": [
+        { "hash": "8d7e6f5", "author": "Alexandre", "date": "2026-02-18", "message": "Add type annotations to app configuration loader" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "hash": "9c8e2b1",
+      "author": "David Lord",
+      "date": "2026-03-14",
+      "message": "Refactor blueprint route registration and deferred setup hooks",
+      "files_changed_count": 3
+    },
+    {
+      "hash": "5e6f7a8",
+      "author": "David Lord",
+      "date": "2026-03-10",
+      "message": "Deprecate legacy locked_cached_property utility",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "3f4a1c0",
+      "author": "Pallets Team",
+      "date": "2026-03-02",
+      "message": "Clean up async request dispatching context management",
+      "files_changed_count": 4
+    },
+    {
+      "hash": "2d3e4f5",
+      "author": "Sarah Chen",
+      "date": "2026-03-01",
+      "message": "Enforce SameSite=Lax cookie attribute by default",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "7b8c9d0",
+      "author": "Elena Rostova",
+      "date": "2026-02-28",
+      "message": "Handle nested blueprint URL prefix normalization",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "6a7b8c9",
+      "author": "David Lord",
+      "date": "2026-02-22",
+      "message": "Update Jinja context processor bridge",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "8d7e6f5",
+      "author": "Alexandre",
+      "date": "2026-02-18",
+      "message": "Add type annotations to app configuration loader",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "4c3b2a1",
+      "author": "Kenji",
+      "date": "2026-02-15",
+      "message": "Improve send_from_directory mime-type resolution",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "1a2b3c4",
+      "author": "Markus",
+      "date": "2026-02-04",
+      "message": "Fix CLI runner signal propagation edge case",
+      "files_changed_count": 3
+    },
+    {
+      "hash": "8f9e0a1",
+      "author": "David Lord",
+      "date": "2026-01-20",
+      "message": "Add blinker deprecation warning fallback",
+      "files_changed_count": 1
+    }
+  ]
+}

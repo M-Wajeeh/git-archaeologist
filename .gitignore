@@ -1,0 +1,25 @@
+# Personal learning context
+/devpost/learner-profile.md
+
+# Local credential files
+.env
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+frontend/dist/

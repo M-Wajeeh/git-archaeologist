@@ -1,0 +1,146 @@
+{
+  "repo_name": "tiangolo/fastapi",
+  "analyzed_commits": 50,
+  "total_files": 45,
+  "high_risk_files_count": 3,
+  "files": [
+    {
+      "path": "fastapi/routing.py",
+      "debt_score": 96,
+      "risk_level": "critical",
+      "churn_count": 38,
+      "unique_authors": 9,
+      "lines": 3120,
+      "recent_commits": [
+        { "hash": "f4e3d2c", "author": "Sebastián Ramírez", "date": "2026-03-12", "message": "Optimize dependency resolution graph traversal" },
+        { "hash": "b1a2c3d", "author": "Kludex", "date": "2026-03-01", "message": "Fix response model validation for Annotated unions" },
+        { "hash": "e5f6a7b", "author": "Yury Selivanov", "date": "2026-02-14", "message": "Streamline async route handler execution hooks" }
+      ]
+    },
+    {
+      "path": "fastapi/dependencies/utils.py",
+      "debt_score": 89,
+      "risk_level": "critical",
+      "churn_count": 29,
+      "unique_authors": 7,
+      "lines": 1150,
+      "recent_commits": [
+        { "hash": "f4e3d2c", "author": "Sebastián Ramírez", "date": "2026-03-12", "message": "Optimize dependency resolution graph traversal" },
+        { "hash": "c9d8e7f", "author": "Adrian", "date": "2026-02-20", "message": "Handle nested Security scopes extraction" }
+      ]
+    },
+    {
+      "path": "fastapi/applications.py",
+      "debt_score": 75,
+      "risk_level": "critical",
+      "churn_count": 21,
+      "unique_authors": 6,
+      "lines": 1450,
+      "recent_commits": [
+        { "hash": "a8b7c6d", "author": "Sebastián Ramírez", "date": "2026-03-08", "message": "Expose OpenAPI swagger UI customization parameters" }
+      ]
+    },
+    {
+      "path": "fastapi/openapi/utils.py",
+      "debt_score": 64,
+      "risk_level": "moderate",
+      "churn_count": 17,
+      "unique_authors": 4,
+      "lines": 920,
+      "recent_commits": [
+        { "hash": "d1c2b3a", "author": "Sebastián Ramírez", "date": "2026-02-26", "message": "Ensure schema generation compatibility with Pydantic v2.6" }
+      ]
+    },
+    {
+      "path": "fastapi/params.py",
+      "debt_score": 48,
+      "risk_level": "moderate",
+      "churn_count": 12,
+      "unique_authors": 3,
+      "lines": 850,
+      "recent_commits": [
+        { "hash": "9e8d7c6", "author": "Kludex", "date": "2026-02-10", "message": "Add docstrings for Query and Path alias parameters" }
+      ]
+    },
+    {
+      "path": "fastapi/exceptions.py",
+      "debt_score": 32,
+      "risk_level": "low",
+      "churn_count": 6,
+      "unique_authors": 2,
+      "lines": 120,
+      "recent_commits": [
+        { "hash": "1f2e3d4", "author": "Sebastián Ramírez", "date": "2026-01-28", "message": "Refine HTTPException inheritance chain" }
+      ]
+    },
+    {
+      "path": "fastapi/responses.py",
+      "debt_score": 25,
+      "risk_level": "low",
+      "churn_count": 4,
+      "unique_authors": 2,
+      "lines": 85,
+      "recent_commits": [
+        { "hash": "3a4b5c6", "author": "Marcelo", "date": "2026-01-15", "message": "Export orjson and ujson response proxies" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "hash": "f4e3d2c",
+      "author": "Sebastián Ramírez",
+      "date": "2026-03-12",
+      "message": "Optimize dependency resolution graph traversal",
+      "files_changed_count": 3
+    },
+    {
+      "hash": "a8b7c6d",
+      "author": "Sebastián Ramírez",
+      "date": "2026-03-08",
+      "message": "Expose OpenAPI swagger UI customization parameters",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "b1a2c3d",
+      "author": "Kludex",
+      "date": "2026-03-01",
+      "message": "Fix response model validation for Annotated unions",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "d1c2b3a",
+      "author": "Sebastián Ramírez",
+      "date": "2026-02-26",
+      "message": "Ensure schema generation compatibility with Pydantic v2.6",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "c9d8e7f",
+      "author": "Adrian",
+      "date": "2026-02-20",
+      "message": "Handle nested Security scopes extraction",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "e5f6a7b",
+      "author": "Yury Selivanov",
+      "date": "2026-02-14",
+      "message": "Streamline async route handler execution hooks",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "9e8d7c6",
+      "author": "Kludex",
+      "date": "2026-02-10",
+      "message": "Add docstrings for Query and Path alias parameters",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "1f2e3d4",
+      "author": "Sebastián Ramírez",
+      "date": "2026-01-28",
+      "message": "Refine HTTPException inheritance chain",
+      "files_changed_count": 1
+    }
+  ]
+}

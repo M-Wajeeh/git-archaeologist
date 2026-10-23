@@ -1,0 +1,128 @@
+{
+  "repo_name": "expressjs/express",
+  "analyzed_commits": 50,
+  "total_files": 32,
+  "high_risk_files_count": 3,
+  "files": [
+    {
+      "path": "lib/router/index.js",
+      "debt_score": 95,
+      "risk_level": "critical",
+      "churn_count": 34,
+      "unique_authors": 8,
+      "lines": 1420,
+      "recent_commits": [
+        { "hash": "d4e5f6a", "author": "Linus Unnebäck", "date": "2026-03-09", "message": "Rewrite path-to-regexp v8 route matching compilation" },
+        { "hash": "c3b2a10", "author": "Wes Todd", "date": "2026-02-24", "message": "Prevent stack overflow on ultra-deep middleware dispatch chains" },
+        { "hash": "a1b2c3d", "author": "Douglas Christopher Wilson", "date": "2026-02-11", "message": "Fix trailing slash query param decode regression" }
+      ]
+    },
+    {
+      "path": "lib/application.js",
+      "debt_score": 88,
+      "risk_level": "critical",
+      "churn_count": 27,
+      "unique_authors": 7,
+      "lines": 1180,
+      "recent_commits": [
+        { "hash": "c3b2a10", "author": "Wes Todd", "date": "2026-02-24", "message": "Prevent stack overflow on ultra-deep middleware dispatch chains" },
+        { "hash": "e6f7a8b", "author": "Ulises Gascón", "date": "2026-02-05", "message": "Modernize event listener binding deprecation warnings" }
+      ]
+    },
+    {
+      "path": "lib/response.js",
+      "debt_score": 77,
+      "risk_level": "critical",
+      "churn_count": 20,
+      "unique_authors": 6,
+      "lines": 980,
+      "recent_commits": [
+        { "hash": "9f8e7d6", "author": "Douglas Christopher Wilson", "date": "2026-02-18", "message": "Refactor res.send buffer boundary checks for Node 22" }
+      ]
+    },
+    {
+      "path": "lib/request.js",
+      "debt_score": 62,
+      "risk_level": "moderate",
+      "churn_count": 16,
+      "unique_authors": 4,
+      "lines": 720,
+      "recent_commits": [
+        { "hash": "5a4b3c2", "author": "Wes Todd", "date": "2026-02-01", "message": "Update accept-headers parsing prototype delegation" }
+      ]
+    },
+    {
+      "path": "lib/view.js",
+      "debt_score": 42,
+      "risk_level": "moderate",
+      "churn_count": 8,
+      "unique_authors": 3,
+      "lines": 350,
+      "recent_commits": [
+        { "hash": "8b7a6c5", "author": "Linus Unnebäck", "date": "2026-01-22", "message": "Clean up template lookup cache invalidation" }
+      ]
+    },
+    {
+      "path": "lib/utils.js",
+      "debt_score": 30,
+      "risk_level": "low",
+      "churn_count": 5,
+      "unique_authors": 2,
+      "lines": 180,
+      "recent_commits": [
+        { "hash": "4d3c2b1", "author": "Wes Todd", "date": "2026-01-10", "message": "Deprecate legacy etag helper wrapper" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "hash": "d4e5f6a",
+      "author": "Linus Unnebäck",
+      "date": "2026-03-09",
+      "message": "Rewrite path-to-regexp v8 route matching compilation",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "c3b2a10",
+      "author": "Wes Todd",
+      "date": "2026-02-24",
+      "message": "Prevent stack overflow on ultra-deep middleware dispatch chains",
+      "files_changed_count": 3
+    },
+    {
+      "hash": "9f8e7d6",
+      "author": "Douglas Christopher Wilson",
+      "date": "2026-02-18",
+      "message": "Refactor res.send buffer boundary checks for Node 22",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "a1b2c3d",
+      "author": "Douglas Christopher Wilson",
+      "date": "2026-02-11",
+      "message": "Fix trailing slash query param decode regression",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "e6f7a8b",
+      "author": "Ulises Gascón",
+      "date": "2026-02-05",
+      "message": "Modernize event listener binding deprecation warnings",
+      "files_changed_count": 2
+    },
+    {
+      "hash": "5a4b3c2",
+      "author": "Wes Todd",
+      "date": "2026-02-01",
+      "message": "Update accept-headers parsing prototype delegation",
+      "files_changed_count": 1
+    },
+    {
+      "hash": "8b7a6c5",
+      "author": "Linus Unnebäck",
+      "date": "2026-01-22",
+      "message": "Clean up template lookup cache invalidation",
+      "files_changed_count": 1
+    }
+  ]
+}
