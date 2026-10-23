@@ -8,23 +8,23 @@
 
 body {
   margin: 0;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #f5f2eb;
+  color: #1c1917;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Crisp light scrollbars */
+/* Warm stone scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #ede8df;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d6cebe;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #b8ac96;
 }

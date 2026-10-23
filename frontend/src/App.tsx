@@ -66,7 +66,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
+    <div className="min-h-screen bg-[#f5f2eb] flex flex-col font-sans text-stone-900">
       <CommandHeader
         onSearch={handleAudit}
         isLoading={isLoading}
@@ -78,19 +78,19 @@ export const App: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 space-y-5">
         {/* Error Alert Banner */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3.5 flex items-center justify-between gap-4 shadow-2xs">
+          <div className="bg-[#fef2f2] border border-[#fecaca] rounded-lg p-3.5 flex items-center justify-between gap-4 shadow-2xs">
             <div className="flex items-center gap-2.5">
-              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-[#b91c1c] shrink-0" />
               <div>
-                <p className="text-xs font-medium text-red-800">{error.message}</p>
+                <p className="text-xs font-semibold text-[#991b1b]">{error.message}</p>
                 {error.code && (
-                  <p className="text-[11px] font-mono text-red-600">Code: {error.code}</p>
+                  <p className="text-[11px] font-mono text-[#b91c1c]">Code: {error.code}</p>
                 )}
               </div>
             </div>
             <button
               onClick={() => handleAudit('pallets/flask')}
-              className="text-xs font-mono bg-white hover:bg-red-100 text-red-800 border border-red-300 rounded px-2.5 py-1 transition-colors font-medium shadow-2xs"
+              className="text-xs font-mono bg-white hover:bg-[#fee2e2] text-[#991b1b] border border-[#fca5a5] rounded px-2.5 py-1 transition-colors font-medium shadow-2xs"
             >
               Reset to Demo
             </button>
@@ -100,42 +100,42 @@ export const App: React.FC = () => {
         {/* Repository Stats Summary Header */}
         {analysis && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-xs">
-              <div className="flex items-center justify-between text-slate-500 text-xs font-mono font-medium">
+            <div className="bg-[#faf8f5] border border-[#e4ded3] rounded-lg p-3.5 shadow-xs">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-mono font-medium">
                 <span>REPOSITORY</span>
-                <GitBranch className="w-3.5 h-3.5 text-slate-400" />
+                <GitBranch className="w-3.5 h-3.5 text-stone-400" />
               </div>
-              <p className="text-base font-mono font-bold text-slate-900 mt-1 truncate">
+              <p className="text-base font-mono font-bold text-stone-900 mt-1 truncate">
                 {analysis.repo_name}
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-xs">
-              <div className="flex items-center justify-between text-slate-500 text-xs font-mono font-medium">
+            <div className="bg-[#faf8f5] border border-[#e4ded3] rounded-lg p-3.5 shadow-xs">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-mono font-medium">
                 <span>COMMITS SCANNED</span>
-                <Layers className="w-3.5 h-3.5 text-blue-600" />
+                <Layers className="w-3.5 h-3.5 text-[#c2410c]" />
               </div>
-              <p className="text-base font-mono font-bold text-blue-600 mt-1">
+              <p className="text-base font-mono font-bold text-[#c2410c] mt-1">
                 {analysis.analyzed_commits} commits
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-xs">
-              <div className="flex items-center justify-between text-slate-500 text-xs font-mono font-medium">
+            <div className="bg-[#faf8f5] border border-[#e4ded3] rounded-lg p-3.5 shadow-xs">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-mono font-medium">
                 <span>FILES TRACKED</span>
-                <FileCode2 className="w-3.5 h-3.5 text-slate-400" />
+                <FileCode2 className="w-3.5 h-3.5 text-stone-400" />
               </div>
-              <p className="text-base font-mono font-bold text-slate-800 mt-1">
+              <p className="text-base font-mono font-bold text-stone-800 mt-1">
                 {analysis.total_files} files
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-xs">
-              <div className="flex items-center justify-between text-red-600 text-xs font-mono font-medium">
+            <div className="bg-[#faf8f5] border border-[#e4ded3] rounded-lg p-3.5 shadow-xs">
+              <div className="flex items-center justify-between text-[#b91c1c] text-xs font-mono font-medium">
                 <span>HIGH DEBT HOTSPOTS</span>
-                <span className="w-2 h-2 rounded-full bg-red-600" />
+                <span className="w-2 h-2 rounded-full bg-[#b91c1c]" />
               </div>
-              <p className="text-base font-mono font-bold text-red-600 mt-1">
+              <p className="text-base font-mono font-bold text-[#b91c1c] mt-1">
                 {analysis.high_risk_files_count} files
               </p>
             </div>
