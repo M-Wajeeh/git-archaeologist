@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Look at the Debt Matrix table in the browser, click column sort toggles, and verify high-debt hotspot files are highlighted in red at the top.
   Commit: `Add interactive Architectural Debt Matrix with risk scoring and sorting`
 
-- [ ] **3. Git Volatility Timeline and rhythm sparkline**
+- [x] **3. Git Volatility Timeline and rhythm sparkline**
   Becomes usable: The Right Cockpit panel renders the chronological commit volatility feed for the repository's last 50 commits, displaying commit hashes, authors, timestamps, and commit messages with interactive linking to the debt matrix.
   Why now: Completes the two-panel Split Cockpit experience specified in PRD & Spec, giving temporal context to the debt matrix.
   PRD ref: `prd.md > Git Volatility Timeline`, `prd.md > Main Cockpit (Split View)`
