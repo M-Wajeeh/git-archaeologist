@@ -66,7 +66,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans text-black">
+    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans text-zinc-900">
       <CommandHeader
         onSearch={handleAudit}
         isLoading={isLoading}
@@ -78,7 +78,7 @@ export const App: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 space-y-5">
         {/* Error Alert Banner */}
         {error && (
-          <div className="bg-white border border-red-300 rounded-lg p-3.5 flex items-center justify-between gap-4 shadow-2xs">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3.5 flex items-center justify-between gap-4 shadow-2xs">
             <div className="flex items-center gap-2.5">
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
               <div>
@@ -90,7 +90,7 @@ export const App: React.FC = () => {
             </div>
             <button
               onClick={() => handleAudit('pallets/flask')}
-              className="text-xs font-mono bg-zinc-100 hover:bg-zinc-200 text-black border border-zinc-300 rounded px-2.5 py-1 transition-colors font-medium shadow-2xs"
+              className="text-xs font-mono bg-white hover:bg-zinc-100 text-zinc-800 border border-zinc-300 rounded px-2.5 py-1 transition-colors font-medium shadow-2xs"
             >
               Reset to Demo
             </button>
@@ -105,7 +105,7 @@ export const App: React.FC = () => {
                 <span>REPOSITORY</span>
                 <GitBranch className="w-3.5 h-3.5 text-zinc-400" />
               </div>
-              <p className="text-base font-mono font-bold text-black mt-1 truncate">
+              <p className="text-base font-mono font-bold text-zinc-900 mt-1 truncate">
                 {analysis.repo_name}
               </p>
             </div>
@@ -113,9 +113,9 @@ export const App: React.FC = () => {
             <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
               <div className="flex items-center justify-between text-zinc-500 text-xs font-mono font-medium">
                 <span>COMMITS SCANNED</span>
-                <Layers className="w-3.5 h-3.5 text-black" />
+                <Layers className="w-3.5 h-3.5 text-orange-600" />
               </div>
-              <p className="text-base font-mono font-bold text-black mt-1">
+              <p className="text-base font-mono font-bold text-orange-600 mt-1">
                 {analysis.analyzed_commits} commits
               </p>
             </div>
@@ -125,17 +125,17 @@ export const App: React.FC = () => {
                 <span>FILES TRACKED</span>
                 <FileCode2 className="w-3.5 h-3.5 text-zinc-400" />
               </div>
-              <p className="text-base font-mono font-bold text-black mt-1">
+              <p className="text-base font-mono font-bold text-zinc-800 mt-1">
                 {analysis.total_files} files
               </p>
             </div>
 
             <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
-              <div className="flex items-center justify-between text-black text-xs font-mono font-medium">
+              <div className="flex items-center justify-between text-red-600 text-xs font-mono font-medium">
                 <span>HIGH DEBT HOTSPOTS</span>
                 <span className="w-2 h-2 rounded-full bg-red-600" />
               </div>
-              <p className="text-base font-mono font-bold text-black mt-1">
+              <p className="text-base font-mono font-bold text-red-600 mt-1">
                 {analysis.high_risk_files_count} files
               </p>
             </div>

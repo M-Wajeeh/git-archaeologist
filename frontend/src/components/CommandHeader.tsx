@@ -48,26 +48,26 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
   };
 
   return (
-    <header className="bg-white border-b border-zinc-200 text-black sticky top-0 z-20">
-      {/* Top linear progress bar (solid black) */}
+    <header className="bg-white border-b border-zinc-200 text-zinc-900 sticky top-0 z-20 shadow-xs">
+      {/* Top linear progress bar (solid Cloudflare orange) */}
       {isLoading && (
-        <div className="h-0.5 w-full bg-zinc-100 overflow-hidden">
-          <div className="h-full bg-black animate-[pulse_1s_infinite] w-full" />
+        <div className="h-0.5 w-full bg-orange-100 overflow-hidden">
+          <div className="h-full bg-orange-500 animate-[pulse_1s_infinite] w-full" />
         </div>
       )}
 
       <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Brand identity - Minimalist Monochrome */}
+        {/* Brand identity - Cloudflare / Grafana Developer Style */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-8 h-8 rounded border border-zinc-300 bg-white flex items-center justify-center text-black shadow-2xs">
+          <div className="w-8 h-8 rounded border border-orange-200 bg-orange-50 flex items-center justify-center text-orange-600 shadow-2xs">
             <GitPullRequest className="w-4 h-4" />
           </div>
           <div className="leading-tight">
             <div className="flex items-center gap-2">
-              <span className="font-mono font-bold text-sm text-black tracking-tight">
+              <span className="font-mono font-bold text-sm text-zinc-900 tracking-tight">
                 git-archaeologist
               </span>
-              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-300 font-semibold">
+              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-orange-50 text-orange-700 border border-orange-200 font-semibold">
                 Audit
               </span>
             </div>
@@ -88,7 +88,7 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
               onChange={(e) => setInputVal(e.target.value)}
               placeholder="e.g. pallets/flask or github.com/owner/repo"
               disabled={isLoading}
-              className="w-full bg-zinc-50 border border-zinc-300 hover:border-zinc-400 focus:border-black focus:bg-white rounded-md pl-9 pr-24 py-1.5 text-xs text-black placeholder-zinc-400 font-mono focus:outline-none transition-colors"
+              className="w-full bg-zinc-50 border border-zinc-300 hover:border-zinc-400 focus:border-orange-500 focus:bg-white rounded-md pl-9 pr-24 py-1.5 text-xs text-zinc-900 placeholder-zinc-400 font-mono focus:outline-none transition-colors"
             />
             <div className="absolute right-1.5 flex items-center gap-1.5">
               <kbd className="hidden sm:inline-block text-[10px] font-mono bg-white text-zinc-500 border border-zinc-300 rounded px-1.5 py-0.5 shadow-2xs">
@@ -97,7 +97,7 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || !inputVal.trim()}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded bg-black hover:bg-zinc-800 text-white disabled:opacity-40 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded bg-orange-600 hover:bg-orange-500 text-white disabled:opacity-40 transition-colors shadow-2xs"
               >
                 <Play className="w-2.5 h-2.5 fill-current" />
                 Analyze
@@ -121,11 +121,11 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
                 disabled={isLoading}
                 className={`text-xs font-mono px-2.5 py-1 rounded border transition-colors flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-black text-white border-black font-semibold shadow-2xs'
-                    : 'bg-white hover:bg-zinc-100 text-zinc-700 hover:text-black border-zinc-300'
+                    ? 'bg-orange-50 text-orange-700 border-orange-400 font-semibold shadow-2xs'
+                    : 'bg-white hover:bg-zinc-100 text-zinc-700 hover:text-zinc-900 border-zinc-300'
                 }`}
               >
-                {isActive && <Check className="w-3 h-3 text-white" />}
+                {isActive && <Check className="w-3 h-3 text-orange-600" />}
                 {demo.label.split('/')[1]}
               </button>
             );
@@ -135,12 +135,12 @@ export const CommandHeader: React.FC<CommandHeaderProps> = ({
 
       {/* Status bar during loading */}
       {isLoading && (
-        <div className="bg-zinc-100 border-t border-zinc-200 px-6 py-1.5 text-xs font-mono text-zinc-800 flex items-center justify-between">
+        <div className="bg-orange-50/70 border-t border-orange-100 px-6 py-1.5 text-xs font-mono text-orange-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-black animate-ping" />
+            <span className="inline-block w-2 h-2 rounded-full bg-orange-600 animate-ping" />
             <span>{loadingStage || 'Analyzing repository commits...'}</span>
           </div>
-          <span className="text-zinc-500">History window: 50 commits</span>
+          <span className="text-orange-600">History window: 50 commits</span>
         </div>
       )}
     </header>

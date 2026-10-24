@@ -22,8 +22,8 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
       <div className="px-4 py-3.5 border-b border-zinc-200 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Activity className="w-4 h-4 text-black" />
-            <h3 className="font-mono text-sm font-bold text-black uppercase tracking-tight">
+            <Activity className="w-4 h-4 text-orange-600" />
+            <h3 className="font-mono text-sm font-bold text-zinc-900 uppercase tracking-tight">
               Git Volatility Timeline
             </h3>
           </div>
@@ -35,7 +35,7 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
           Chronological commit rhythm across the 50-commit analysis window
         </p>
 
-        {/* Clean Monochromatic Sparkline / Rhythm Strip */}
+        {/* Clean Activity Sparkline / Rhythm Strip */}
         <div className="mt-3 pt-2.5 border-t border-zinc-200">
           <div className="flex items-end gap-1 h-9 w-full bg-zinc-100 p-1.5 rounded border border-zinc-200">
             {timeline.slice(0, 30).map((commit, idx) => {
@@ -59,9 +59,9 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
                   }}
                   className={`flex-1 rounded-xs cursor-pointer transition-colors ${
                     isHovered
-                      ? 'bg-black'
+                      ? 'bg-orange-500'
                       : commit.files_changed_count >= 3
-                      ? 'bg-zinc-700 hover:bg-black'
+                      ? 'bg-zinc-700 hover:bg-orange-500'
                       : 'bg-zinc-300 hover:bg-zinc-500'
                   }`}
                   style={{ height: `${heightPct}%` }}
@@ -93,12 +93,12 @@ export const VolatilityTimeline: React.FC<VolatilityTimelineProps> = ({
                 onHoverCommit?.(null);
               }}
               className={`p-3 transition-colors cursor-default ${
-                isHovered ? 'bg-zinc-100' : 'hover:bg-zinc-50'
+                isHovered ? 'bg-orange-50/70' : 'hover:bg-zinc-50'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 text-black border border-zinc-300 font-medium">
+                  <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
                     {commit.hash.slice(0, 7)}
                   </span>
                   <span className="text-zinc-700 text-[11px] flex items-center gap-1 font-sans font-medium">
