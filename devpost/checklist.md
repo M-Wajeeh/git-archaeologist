@@ -84,3 +84,4 @@ Activity mode: [live app and editor, explicit static fallback, focused alternati
 
 - Redesigned complete application interface from dark mode to a clean, crisp, high-contrast light theme with solid developer colors — user requested a clean light theme without dark AI-generated gradient shades.
 - Refactored UI color palette from stark white to a warm linen, sand, and stone palette with contrasting terracotta and deep espresso charcoal accents — user requested warm tones rather than an all-white UI.
+- Switched UI styling to a Minimalist Monochrome Light Mode (high contrast black & white with subtle semantic status dots) per user preference for a clean, non-AI developer aesthetic.
