@@ -5,7 +5,7 @@ import { VolatilityTimeline } from './components/VolatilityTimeline';
 import { InspectorDrawer } from './components/InspectorDrawer';
 import { analyzeRepository } from './services/api';
 import { AnalysisResult, FileHotspot, CommitInfo } from './types';
-import { GitBranch, AlertCircle, Layers, FileCode2 } from 'lucide-react';
+import { GitBranch, AlertCircle, Layers, FileCode2, ExternalLink, ShieldAlert } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeRepo, setActiveRepo] = useState<string>('pallets/flask');
@@ -25,14 +25,14 @@ export const App: React.FC = () => {
     setHighlightedPaths([]);
 
     try {
-      setLoadingStage('Fetching 50 commits...');
-      await new Promise((r) => setTimeout(r, 250));
+      setLoadingStage('Cloning repository shallow depth 50...');
+      await new Promise((r) => setTimeout(r, 200));
 
-      setLoadingStage('Calculating churn & author distribution...');
+      setLoadingStage('Analyzing numstat telemetry & author churn...');
       const data = await analyzeRepository(repoUrl);
 
-      setLoadingStage('Formatting matrix and timeline...');
-      await new Promise((r) => setTimeout(r, 200));
+      setLoadingStage('Calculating architectural debt index...');
+      await new Promise((r) => setTimeout(r, 150));
 
       setAnalysis(data);
     } catch (err: any) {
@@ -65,8 +65,17 @@ export const App: React.FC = () => {
     handleAudit('pallets/flask');
   }, []);
 
+  // Compute percentage of files in high risk
+  const highRiskPct = analysis && analysis.total_files > 0
+    ? Math.round((analysis.high_risk_files_count / analysis.total_files) * 100)
+    : 0;
+
+  const githubRepoUrl = analysis
+    ? `https://github.com/${analysis.repo_name.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '')}`
+    : null;
+
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans text-zinc-900">
+    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans text-zinc-900 selection:bg-orange-100 selection:text-orange-900">
       <CommandHeader
         onSearch={handleAudit}
         isLoading={isLoading}
@@ -75,7 +84,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Cockpit Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 space-y-5">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-4 sm:space-y-5">
         {/* Error Alert Banner */}
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3.5 flex items-center justify-between gap-4 shadow-2xs">
@@ -97,47 +106,89 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Repository Stats Summary Header */}
+        {/* Repository Stats Summary Bento Grid */}
         {analysis && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
-              <div className="flex items-center justify-between text-zinc-500 text-xs font-mono font-medium">
-                <span>REPOSITORY</span>
+            {/* Card 1: Repository Info */}
+            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-center justify-between text-zinc-500 text-[11px] font-mono font-medium">
+                <span>TARGET REPOSITORY</span>
                 <GitBranch className="w-3.5 h-3.5 text-zinc-400" />
               </div>
-              <p className="text-base font-mono font-bold text-zinc-900 mt-1 truncate">
-                {analysis.repo_name}
-              </p>
+              <div className="mt-1">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-mono font-bold text-zinc-900 truncate" title={analysis.repo_name}>
+                    {analysis.repo_name}
+                  </p>
+                  {githubRepoUrl && (
+                    <a
+                      href={githubRepoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open on GitHub"
+                      className="text-zinc-400 hover:text-orange-600 transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+                <p className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  git branch: default
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
-              <div className="flex items-center justify-between text-zinc-500 text-xs font-mono font-medium">
-                <span>COMMITS SCANNED</span>
+            {/* Card 2: Commits Scanned */}
+            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-center justify-between text-zinc-500 text-[11px] font-mono font-medium">
+                <span>SAMPLE DEPTH</span>
                 <Layers className="w-3.5 h-3.5 text-orange-600" />
               </div>
-              <p className="text-base font-mono font-bold text-orange-600 mt-1">
-                {analysis.analyzed_commits} commits
-              </p>
+              <div className="mt-1">
+                <p className="text-base font-mono font-bold text-orange-600">
+                  {analysis.analyzed_commits} commits
+                </p>
+                <p className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  shallow history window
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
-              <div className="flex items-center justify-between text-zinc-500 text-xs font-mono font-medium">
-                <span>FILES TRACKED</span>
+            {/* Card 3: Files Tracked */}
+            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-center justify-between text-zinc-500 text-[11px] font-mono font-medium">
+                <span>ACTIVE FILES</span>
                 <FileCode2 className="w-3.5 h-3.5 text-zinc-400" />
               </div>
-              <p className="text-base font-mono font-bold text-zinc-800 mt-1">
-                {analysis.total_files} files
-              </p>
+              <div className="mt-1">
+                <p className="text-base font-mono font-bold text-zinc-800">
+                  {analysis.total_files} files
+                </p>
+                <p className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  touched in scan window
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs">
-              <div className="flex items-center justify-between text-red-600 text-xs font-mono font-medium">
+            {/* Card 4: High Debt Hotspots */}
+            <div className="bg-white border border-zinc-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-center justify-between text-red-600 text-[11px] font-mono font-medium">
                 <span>HIGH DEBT HOTSPOTS</span>
-                <span className="w-2 h-2 rounded-full bg-red-600" />
+                <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
               </div>
-              <p className="text-base font-mono font-bold text-red-600 mt-1">
-                {analysis.high_risk_files_count} files
-              </p>
+              <div className="mt-1">
+                <div className="flex items-baseline gap-2">
+                  <p className="text-base font-mono font-bold text-red-600">
+                    {analysis.high_risk_files_count} files
+                  </p>
+                  <span className="text-[10px] font-mono text-zinc-400">
+                    ({highRiskPct}%)
+                  </span>
+                </div>
+                <p className="text-[10px] text-red-600 font-mono mt-0.5">
+                  debt index &ge; 70 (P0/P1)
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -159,6 +210,7 @@ export const App: React.FC = () => {
             <div className="lg:col-span-5 xl:col-span-4">
               <VolatilityTimeline
                 timeline={analysis.timeline}
+                activeRepo={analysis.repo_name}
                 onHoverCommit={handleHoverCommit}
               />
             </div>
@@ -168,9 +220,22 @@ export const App: React.FC = () => {
         {/* Sliding Inspector Drawer */}
         <InspectorDrawer
           file={selectedFile}
+          activeRepo={analysis?.repo_name || activeRepo}
           onClose={() => setSelectedFile(null)}
         />
       </main>
+
+      {/* Subtle Footer */}
+      <footer className="border-t border-zinc-200 bg-white py-3 px-6 text-xs text-zinc-500 font-mono flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <span>GitArchaeologist v1.0</span>
+          <span>•</span>
+          <span className="text-zinc-400">Press <kbd className="px-1 py-0.2 bg-zinc-100 border border-zinc-300 rounded text-[10px] text-zinc-700">?</kbd> for shortcuts</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span>Architectural telemetry powered by Git shallow cloner &amp; Gemini</span>
+        </div>
+      </footer>
     </div>
   );
 };

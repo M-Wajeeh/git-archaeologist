@@ -7,6 +7,10 @@ import {
   ChevronRight,
   GitCommit,
   Users,
+  Copy,
+  Check,
+  Download,
+  Filter,
 } from 'lucide-react';
 
 interface DebtMatrixProps {
@@ -17,6 +21,7 @@ interface DebtMatrixProps {
 }
 
 type SortField = 'debt_score' | 'churn_count' | 'unique_authors' | 'lines';
+type RiskFilter = 'all' | 'critical' | 'moderate' | 'low';
 
 export const DebtMatrix: React.FC<DebtMatrixProps> = ({
   files,
@@ -27,6 +32,8 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
   const [sortField, setSortField] = useState<SortField>('debt_score');
   const [sortAsc, setSortAsc] = useState<boolean>(false);
   const [searchFilter, setSearchFilter] = useState<string>('');
+  const [riskFilter, setRiskFilter] = useState<RiskFilter>('all');
+  const [copiedPath, setCopiedPath] = useState<string | null>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -37,17 +44,57 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
     }
   };
 
+  const handleCopyPath = (e: React.MouseEvent, path: string) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(path);
+    setCopiedPath(path);
+    setTimeout(() => setCopiedPath(null), 1500);
+  };
+
+  const handleExportCSV = () => {
+    const headers = ['File Path', 'Debt Score', 'Risk Level', 'Commit Churn', 'Contributors', 'Lines of Code'];
+    const rows = files.map((f) => [
+      f.path,
+      f.debt_score,
+      f.risk_level,
+      f.churn_count,
+      f.unique_authors,
+      f.lines,
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `architectural-debt-audit-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredAndSortedFiles = useMemo(() => {
     return files
-      .filter((file) =>
-        file.path.toLowerCase().includes(searchFilter.toLowerCase().trim())
-      )
+      .filter((file) => {
+        const matchesSearch = file.path.toLowerCase().includes(searchFilter.toLowerCase().trim());
+        const matchesRisk = riskFilter === 'all' || file.risk_level === riskFilter;
+        return matchesSearch && matchesRisk;
+      })
       .sort((a, b) => {
         const valA = a[sortField];
         const valB = b[sortField];
         return sortAsc ? valA - valB : valB - valA;
       });
-  }, [files, searchFilter, sortField, sortAsc]);
+  }, [files, searchFilter, riskFilter, sortField, sortAsc]);
+
+  // Risk counts for filter pills
+  const riskCounts = useMemo(() => {
+    return {
+      all: files.length,
+      critical: files.filter((f) => f.risk_level === 'critical').length,
+      moderate: files.filter((f) => f.risk_level === 'moderate').length,
+      low: files.filter((f) => f.risk_level === 'low').length,
+    };
+  }, [files]);
 
   const getRiskBadge = (score: number) => {
     if (score >= 70) {
@@ -74,11 +121,27 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
     );
   };
 
-  // Solid flat bars without AI gradients
-  const getScoreBarColor = (score: number) => {
-    if (score >= 70) return 'bg-red-600';
-    if (score >= 40) return 'bg-amber-500';
-    return 'bg-emerald-600';
+  const getFileExtensionBadge = (path: string) => {
+    const ext = path.split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'py':
+        return <span className="text-[10px] font-mono px-1 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold">py</span>;
+      case 'ts':
+      case 'tsx':
+        return <span className="text-[10px] font-mono px-1 rounded bg-sky-50 text-sky-700 border border-sky-200 font-semibold">{ext}</span>;
+      case 'js':
+      case 'jsx':
+        return <span className="text-[10px] font-mono px-1 rounded bg-amber-50 text-amber-700 border border-amber-200 font-semibold">{ext}</span>;
+      case 'json':
+      case 'toml':
+      case 'yaml':
+      case 'yml':
+        return <span className="text-[10px] font-mono px-1 rounded bg-orange-50 text-orange-700 border border-orange-200 font-semibold">{ext}</span>;
+      case 'md':
+        return <span className="text-[10px] font-mono px-1 rounded bg-zinc-100 text-zinc-700 border border-zinc-200 font-semibold">md</span>;
+      default:
+        return <span className="text-[10px] font-mono px-1 rounded bg-zinc-100 text-zinc-600 border border-zinc-200 font-semibold">{ext || 'file'}</span>;
+    }
   };
 
   return (
@@ -99,144 +162,240 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
           </p>
         </div>
 
-        {/* Quick Filter Search */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-zinc-400" />
-          <input
-            type="text"
-            value={searchFilter}
-            onChange={(e) => setSearchFilter(e.target.value)}
-            placeholder="Filter file path..."
-            className="w-full bg-zinc-50 border border-zinc-300 focus:border-orange-500 rounded pl-8 pr-3 py-1.5 text-xs text-zinc-900 placeholder-zinc-400 font-mono focus:outline-none transition-colors"
-          />
+        {/* Right side controls: Search & Export */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative w-full sm:w-56">
+            <Search className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-zinc-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Filter file path..."
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              className="w-full bg-zinc-50 border border-zinc-300 hover:border-zinc-400 focus:border-orange-500 focus:bg-white rounded-md pl-8 pr-3 py-1.5 text-xs text-zinc-900 placeholder-zinc-400 font-mono focus:outline-none transition-colors"
+            />
+          </div>
+          <button
+            onClick={handleExportCSV}
+            title="Export CSV Audit Report"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono font-medium rounded border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-700 transition-colors shadow-2xs shrink-0"
+          >
+            <Download className="w-3.5 h-3.5 text-zinc-500" />
+            <span className="hidden sm:inline">Export</span>
+          </button>
         </div>
       </div>
 
-      {/* Structured Hotspots Table */}
-      <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[580px]">
-        <table className="w-full text-left border-collapse text-xs">
-          <thead className="sticky top-0 bg-zinc-50 border-b border-zinc-200 text-zinc-700 font-mono z-10 font-semibold">
-            <tr>
-              <th className="py-2.5 px-4">File Path</th>
+      {/* Risk Filter Tabs */}
+      <div className="px-5 py-2 border-b border-zinc-100 bg-zinc-50/70 flex items-center justify-between gap-2 overflow-x-auto text-xs font-mono">
+        <div className="flex items-center gap-1.5">
+          <span className="text-zinc-400 text-[11px] uppercase tracking-wider mr-1 flex items-center gap-1">
+            <Filter className="w-3 h-3" /> Filter:
+          </span>
+          <button
+            onClick={() => setRiskFilter('all')}
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors ${
+              riskFilter === 'all'
+                ? 'bg-zinc-800 text-white font-bold'
+                : 'text-zinc-600 hover:bg-zinc-200'
+            }`}
+          >
+            All ({riskCounts.all})
+          </button>
+          <button
+            onClick={() => setRiskFilter('critical')}
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors flex items-center gap-1 ${
+              riskFilter === 'critical'
+                ? 'bg-red-600 text-white font-bold'
+                : 'text-red-700 hover:bg-red-50'
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+            Critical ({riskCounts.critical})
+          </button>
+          <button
+            onClick={() => setRiskFilter('moderate')}
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors flex items-center gap-1 ${
+              riskFilter === 'moderate'
+                ? 'bg-amber-600 text-white font-bold'
+                : 'text-amber-800 hover:bg-amber-50'
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+            Moderate ({riskCounts.moderate})
+          </button>
+          <button
+            onClick={() => setRiskFilter('low')}
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors flex items-center gap-1 ${
+              riskFilter === 'low'
+                ? 'bg-emerald-600 text-white font-bold'
+                : 'text-emerald-800 hover:bg-emerald-50'
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            Healthy ({riskCounts.low})
+          </button>
+        </div>
+
+        <span className="text-[11px] text-zinc-400 hidden md:inline">
+          Showing {filteredAndSortedFiles.length} of {files.length}
+        </span>
+      </div>
+
+      {/* Table Content */}
+      <div className="overflow-x-auto flex-1">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-zinc-200 bg-zinc-50/50 text-[11px] font-mono text-zinc-500 uppercase tracking-wider select-none">
+              <th className="py-2.5 px-4 font-semibold">File Path</th>
               <th
                 onClick={() => handleSort('debt_score')}
-                className="py-2.5 px-4 cursor-pointer hover:text-orange-600 transition-colors"
+                className="py-2.5 px-4 font-semibold cursor-pointer hover:text-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Debt Score</span>
-                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
+                  <ArrowUpDown className={`w-3 h-3 ${sortField === 'debt_score' ? 'text-orange-600' : 'text-zinc-400'}`} />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('churn_count')}
-                className="py-2.5 px-4 cursor-pointer hover:text-orange-600 transition-colors"
+                className="py-2.5 px-4 font-semibold cursor-pointer hover:text-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Commit Churn</span>
-                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
+                  <ArrowUpDown className={`w-3 h-3 ${sortField === 'churn_count' ? 'text-orange-600' : 'text-zinc-400'}`} />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('unique_authors')}
-                className="py-2.5 px-4 cursor-pointer hover:text-orange-600 transition-colors"
+                className="py-2.5 px-4 font-semibold cursor-pointer hover:text-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Contributors</span>
-                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
+                  <ArrowUpDown className={`w-3 h-3 ${sortField === 'unique_authors' ? 'text-orange-600' : 'text-zinc-400'}`} />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('lines')}
-                className="py-2.5 px-4 cursor-pointer hover:text-orange-600 transition-colors hidden md:table-cell"
+                className="py-2.5 px-4 font-semibold cursor-pointer hover:text-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Lines</span>
-                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
+                  <ArrowUpDown className={`w-3 h-3 ${sortField === 'lines' ? 'text-orange-600' : 'text-zinc-400'}`} />
                 </div>
               </th>
-              <th className="py-2.5 px-4 text-right">Action</th>
+              <th className="py-2.5 px-4 font-semibold text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-200 font-mono">
+          <tbody className="divide-y divide-zinc-200 text-xs">
             {filteredAndSortedFiles.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-10 text-center text-zinc-500 font-sans">
-                  No files matching "{searchFilter}"
+                <td colSpan={6} className="py-12 text-center text-zinc-500 font-mono">
+                  <FileCode2 className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
+                  <p className="text-zinc-700 font-medium">No hotspot files matched your filter.</p>
+                  <button
+                    onClick={() => {
+                      setSearchFilter('');
+                      setRiskFilter('all');
+                    }}
+                    className="mt-2 text-xs text-orange-600 hover:text-orange-700 font-semibold underline"
+                  >
+                    Clear filters
+                  </button>
                 </td>
               </tr>
             ) : (
               filteredAndSortedFiles.map((file) => {
                 const isSelected = selectedFile?.path === file.path;
-                const isHighlighted = highlightedPaths.includes(file.path);
+                const isCrossHighlighted = highlightedPaths.includes(file.path);
 
                 return (
                   <tr
                     key={file.path}
                     onClick={() => onSelectFile(file)}
-                    className={`group cursor-pointer transition-colors ${
+                    className={`cursor-pointer transition-colors group ${
                       isSelected
-                        ? 'bg-orange-50/70 text-zinc-950 font-semibold ring-1 ring-orange-400/80'
-                        : isHighlighted
-                        ? 'bg-orange-50/40 text-orange-950 font-medium'
+                        ? 'bg-orange-50/70 border-l-4 border-l-orange-600'
+                        : isCrossHighlighted
+                        ? 'bg-amber-50/60 border-l-4 border-l-amber-500'
                         : 'hover:bg-zinc-50'
                     }`}
                   >
-                    {/* File Path */}
-                    <td className="py-2.5 px-4">
+                    {/* File Path & Type Badge */}
+                    <td className="py-3 px-4 font-mono font-medium text-zinc-900 max-w-xs sm:max-w-sm truncate">
                       <div className="flex items-center gap-2">
-                        <FileCode2 className="w-3.5 h-3.5 text-zinc-400 group-hover:text-orange-600 shrink-0" />
-                        <span className="text-zinc-800 group-hover:text-zinc-950 font-medium truncate max-w-[280px] lg:max-w-[340px]">
+                        {getFileExtensionBadge(file.path)}
+                        <span className="truncate group-hover:text-orange-700 transition-colors" title={file.path}>
                           {file.path}
                         </span>
+                        <button
+                          onClick={(e) => handleCopyPath(e, file.path)}
+                          title="Copy file path"
+                          className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-zinc-700 p-0.5 rounded transition-opacity"
+                        >
+                          {copiedPath === file.path ? (
+                            <Check className="w-3 h-3 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </button>
                       </div>
                     </td>
 
-                    {/* Debt Score & Bar */}
-                    <td className="py-2.5 px-4">
-                      <div className="space-y-1 w-32">
-                        <div>{getRiskBadge(file.debt_score)}</div>
-                        <div className="w-full bg-zinc-100 rounded h-1 overflow-hidden border border-zinc-200">
+                    {/* Debt Score & Gauge Bar */}
+                    <td className="py-3 px-4">
+                      <div className="space-y-1">
+                        {getRiskBadge(file.debt_score)}
+                        <div className="w-24 h-1 bg-zinc-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full ${getScoreBarColor(file.debt_score)}`}
-                            style={{ width: `${file.debt_score}%` }}
+                            className={`h-full rounded-full ${
+                              file.debt_score >= 70
+                                ? 'bg-red-500'
+                                : file.debt_score >= 40
+                                ? 'bg-amber-500'
+                                : 'bg-emerald-500'
+                            }`}
+                            style={{ width: `${Math.min(100, file.debt_score)}%` }}
                           />
                         </div>
                       </div>
                     </td>
 
                     {/* Churn Count */}
-                    <td className="py-2.5 px-4 text-zinc-700">
+                    <td className="py-3 px-4 font-mono text-zinc-600">
                       <div className="flex items-center gap-1.5">
-                        <GitCommit className="w-3 h-3 text-zinc-400" />
+                        <GitCommit className="w-3.5 h-3.5 text-zinc-400" />
                         <span>{file.churn_count} commits</span>
                       </div>
                     </td>
 
                     {/* Unique Authors */}
-                    <td className="py-2.5 px-4 text-zinc-700">
+                    <td className="py-3 px-4 font-mono text-zinc-600">
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-3 h-3 text-zinc-400" />
+                        <Users className="w-3.5 h-3.5 text-zinc-400" />
                         <span>{file.unique_authors} authors</span>
                       </div>
                     </td>
 
-                    {/* Lines */}
-                    <td className="py-2.5 px-4 text-zinc-500 hidden md:table-cell">
+                    {/* Lines of Code */}
+                    <td className="py-3 px-4 font-mono text-zinc-600">
                       <span>{file.lines.toLocaleString()} loc</span>
                     </td>
 
-                    {/* Action Trigger */}
-                    <td className="py-2.5 px-4 text-right">
+                    {/* Action Button */}
+                    <td className="py-3 px-4 text-right">
                       <button
-                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           onSelectFile(file);
                         }}
-                        className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-white hover:bg-orange-600 hover:text-white text-zinc-800 border border-zinc-300 hover:border-orange-600 transition-colors shadow-2xs font-medium"
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono transition-colors shadow-2xs ${
+                          isSelected
+                            ? 'bg-orange-600 text-white font-semibold'
+                            : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-100 group-hover:border-zinc-300'
+                        }`}
                       >
-                        Inspect
-                        <ChevronRight className="w-3 h-3 text-zinc-400 group-hover:text-white" />
+                        <span>Inspect</span>
+                        <ChevronRight className="w-3 h-3" />
                       </button>
                     </td>
                   </tr>
