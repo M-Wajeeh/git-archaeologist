@@ -52,62 +52,62 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
   const getRiskBadge = (score: number) => {
     if (score >= 70) {
       return (
-        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-[#fef2f2] text-[#991b1b] border border-[#fecaca] font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#b91c1c] shrink-0" />
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-black text-white font-medium shadow-2xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
           Critical ({score})
         </span>
       );
     }
     if (score >= 40) {
       return (
-        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-[#fffbeb] text-[#92400e] border border-[#fde68a] font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#d97706] shrink-0" />
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
           Moderate ({score})
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0] font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#15803d] shrink-0" />
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-50 text-zinc-600 border border-zinc-200 font-medium">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
         Healthy ({score})
       </span>
     );
   };
 
-  // Warm solid colors without gradient blending
+  // Minimalist solid monochrome progress bars
   const getScoreBarColor = (score: number) => {
-    if (score >= 70) return 'bg-[#b91c1c]';
-    if (score >= 40) return 'bg-[#d97706]';
-    return 'bg-[#15803d]';
+    if (score >= 70) return 'bg-black';
+    if (score >= 40) return 'bg-zinc-600';
+    return 'bg-zinc-400';
   };
 
   return (
-    <div className="bg-[#faf8f5] border border-[#e4ded3] rounded-lg overflow-hidden flex flex-col h-full shadow-xs">
+    <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden flex flex-col h-full shadow-2xs">
       {/* Table Header & Controls */}
-      <div className="px-5 py-3.5 border-b border-[#e4ded3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#f4efe6]">
+      <div className="px-5 py-3.5 border-b border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="font-mono text-sm font-bold text-stone-900">
+            <h2 className="font-mono text-sm font-bold text-black uppercase tracking-tight">
               Architectural Debt Matrix
             </h2>
-            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-[#ede8df] text-stone-700 border border-[#d8d0c2] font-medium">
+            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-300 font-medium">
               {files.length} tracked files
             </span>
           </div>
-          <p className="text-xs text-stone-600 mt-0.5">
+          <p className="text-xs text-zinc-500 mt-0.5">
             Files weighted by commit frequency, multi-author churn, and file size
           </p>
         </div>
 
         {/* Quick Filter Search */}
         <div className="relative w-full sm:w-64">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-stone-400" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-zinc-400" />
           <input
             type="text"
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
             placeholder="Filter file path..."
-            className="w-full bg-[#faf8f5] border border-[#dcd5c9] focus:border-[#c2410c] rounded pl-8 pr-3 py-1.5 text-xs text-stone-900 placeholder-stone-400 font-mono focus:outline-none transition-colors"
+            className="w-full bg-zinc-50 border border-zinc-300 focus:border-black rounded pl-8 pr-3 py-1.5 text-xs text-black placeholder-zinc-400 font-mono focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -115,52 +115,52 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
       {/* Structured Hotspots Table */}
       <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[580px]">
         <table className="w-full text-left border-collapse text-xs">
-          <thead className="sticky top-0 bg-[#ede8df] border-b border-[#e4ded3] text-stone-700 font-mono z-10 font-semibold">
+          <thead className="sticky top-0 bg-zinc-50 border-b border-zinc-200 text-zinc-700 font-mono z-10 font-semibold">
             <tr>
               <th className="py-2.5 px-4">File Path</th>
               <th
                 onClick={() => handleSort('debt_score')}
-                className="py-2.5 px-4 cursor-pointer hover:text-stone-950 transition-colors"
+                className="py-2.5 px-4 cursor-pointer hover:text-black transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Debt Score</span>
-                  <ArrowUpDown className="w-3 h-3 text-stone-500" />
+                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('churn_count')}
-                className="py-2.5 px-4 cursor-pointer hover:text-stone-950 transition-colors"
+                className="py-2.5 px-4 cursor-pointer hover:text-black transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Commit Churn</span>
-                  <ArrowUpDown className="w-3 h-3 text-stone-500" />
+                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('unique_authors')}
-                className="py-2.5 px-4 cursor-pointer hover:text-stone-950 transition-colors"
+                className="py-2.5 px-4 cursor-pointer hover:text-black transition-colors"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Contributors</span>
-                  <ArrowUpDown className="w-3 h-3 text-stone-500" />
+                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort('lines')}
-                className="py-2.5 px-4 cursor-pointer hover:text-stone-950 transition-colors hidden md:table-cell"
+                className="py-2.5 px-4 cursor-pointer hover:text-black transition-colors hidden md:table-cell"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Lines</span>
-                  <ArrowUpDown className="w-3 h-3 text-stone-500" />
+                  <ArrowUpDown className="w-3 h-3 text-zinc-400" />
                 </div>
               </th>
               <th className="py-2.5 px-4 text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#e8e2d8] font-mono">
+          <tbody className="divide-y divide-zinc-200 font-mono">
             {filteredAndSortedFiles.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-10 text-center text-stone-500 font-sans">
+                <td colSpan={6} className="py-10 text-center text-zinc-500 font-sans">
                   No files matching "{searchFilter}"
                 </td>
               </tr>
@@ -175,27 +175,27 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
                     onClick={() => onSelectFile(file)}
                     className={`group cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-[#fff7ed] text-stone-900 font-semibold'
+                        ? 'bg-zinc-100 text-black font-semibold'
                         : isHighlighted
-                        ? 'bg-[#fed7aa]/30 text-stone-950 font-medium'
-                        : 'hover:bg-[#f5f0e6]'
+                        ? 'bg-zinc-100/70 text-black font-medium'
+                        : 'hover:bg-zinc-50'
                     }`}
                   >
                     {/* File Path */}
                     <td className="py-2.5 px-4">
                       <div className="flex items-center gap-2">
-                        <FileCode2 className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#c2410c] shrink-0" />
-                        <span className="text-stone-800 group-hover:text-stone-950 font-medium truncate max-w-[280px] lg:max-w-[340px]">
+                        <FileCode2 className="w-3.5 h-3.5 text-zinc-400 group-hover:text-black shrink-0" />
+                        <span className="text-zinc-900 group-hover:text-black font-medium truncate max-w-[280px] lg:max-w-[340px]">
                           {file.path}
                         </span>
                       </div>
                     </td>
 
-                    {/* Debt Score & Solid Bar */}
+                    {/* Debt Score & Monochrome Bar */}
                     <td className="py-2.5 px-4">
                       <div className="space-y-1 w-32">
                         <div>{getRiskBadge(file.debt_score)}</div>
-                        <div className="w-full bg-[#ede8df] rounded h-1 overflow-hidden border border-[#dcd5c9]">
+                        <div className="w-full bg-zinc-100 rounded h-1 overflow-hidden border border-zinc-200">
                           <div
                             className={`h-full ${getScoreBarColor(file.debt_score)}`}
                             style={{ width: `${file.debt_score}%` }}
@@ -205,23 +205,23 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
                     </td>
 
                     {/* Churn Count */}
-                    <td className="py-2.5 px-4 text-stone-700">
+                    <td className="py-2.5 px-4 text-zinc-800">
                       <div className="flex items-center gap-1.5">
-                        <GitCommit className="w-3 h-3 text-stone-500" />
+                        <GitCommit className="w-3 h-3 text-zinc-400" />
                         <span>{file.churn_count} commits</span>
                       </div>
                     </td>
 
                     {/* Unique Authors */}
-                    <td className="py-2.5 px-4 text-stone-700">
+                    <td className="py-2.5 px-4 text-zinc-800">
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-3 h-3 text-stone-500" />
+                        <Users className="w-3 h-3 text-zinc-400" />
                         <span>{file.unique_authors} authors</span>
                       </div>
                     </td>
 
                     {/* Lines */}
-                    <td className="py-2.5 px-4 text-stone-600 hidden md:table-cell">
+                    <td className="py-2.5 px-4 text-zinc-600 hidden md:table-cell">
                       <span>{file.lines.toLocaleString()} loc</span>
                     </td>
 
@@ -233,10 +233,10 @@ export const DebtMatrix: React.FC<DebtMatrixProps> = ({
                           e.stopPropagation();
                           onSelectFile(file);
                         }}
-                        className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-[#ede8df] hover:bg-[#e4ded3] text-stone-800 border border-[#d8d0c2] transition-colors shadow-2xs font-medium"
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-white hover:bg-black hover:text-white text-zinc-800 border border-zinc-300 transition-colors shadow-2xs font-medium"
                       >
                         Inspect
-                        <ChevronRight className="w-3 h-3 text-stone-500" />
+                        <ChevronRight className="w-3 h-3 text-zinc-400 group-hover:text-white" />
                       </button>
                     </td>
                   </tr>
