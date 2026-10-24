@@ -62,23 +62,23 @@ Build mode: fast
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — Slice 2 (Debt Matrix with risk scoring and sorting interactive in browser)
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: [what actually happened; real document/test/code references; unfinished work if interrupted]
-Route and stops: [actual paths and symbols; guided stops completed, or reference-only route]
-Edit outcome: [tried/kept/reverted/declined/not applicable; verification if changed]
-Reflection: [offered/answered/declined/already covered — personal answer belongs only in the ignored profile]
-Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
+Activity and evidence: All 5 functional vertical slices built, mechanically verified, and committed. Live browser exploration and UI iteration (dark -> light -> monochrome -> warm amber/orange) confirmed working at http://localhost:5173. Heuristic fallback and live shallow clone analyzer verified.
+Route and stops: 1. Shallow clone volatility engine (`backend/app/analyzer.py`), 2. Gemini AI diagnosis and heuristic fallback (`backend/app/ai_service.py`), 3. Inspector Drawer UI (`frontend/src/components/InspectorDrawer.tsx`).
+Edit outcome: Theme customized to Warm Amber / Orange (Grafana / Cloudflare) aesthetic across all frontend components; verified with `tsc && vite build` and browser screenshot.
+Reflection: Learner practiced fast-mode agentic building with strict spec contracts and immediate fallback guarantees for bulletproof demos.
+Activity mode: live app and editor
 
 ## Revisions
 
