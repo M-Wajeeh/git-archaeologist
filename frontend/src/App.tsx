@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { CommandHeader } from './components/CommandHeader';
 import { TreemapMatrix } from './components/TreemapMatrix';
+import { DebtMatrix } from './components/DebtMatrix';
+import { VolatilityTimeline } from './components/VolatilityTimeline';
 import { ConceptInspectorPanel } from './components/ConceptInspectorPanel';
 import { DigThroughTime } from './components/DigThroughTime';
 import { InspectorDrawer } from './components/InspectorDrawer';
 import { analyzeRepository } from './services/api';
 import { AnalysisResult, FileHotspot, CommitInfo } from './types';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ShieldAlert, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeRepo, setActiveRepo] = useState<string>('pallets/flask');
@@ -158,21 +160,153 @@ export const App: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
             {/* Left Main (8 cols): Area Map Treemap + Bottom Timeline */}
             <div className="lg:col-span-8 space-y-5">
-              {/* Treemap / Area Map Matrix */}
-              <TreemapMatrix
-                files={analysis.files}
-                selectedFile={selectedFile}
-                onSelectFile={(file) => {
-                  setSelectedFile(file);
-                }}
-                highlightedPaths={highlightedPaths}
-              />
+              {/* Area Map View */}
+              {activeTab === 'map' && (
+                <>
+                  <TreemapMatrix
+                    files={analysis.files}
+                    selectedFile={selectedFile}
+                    onSelectFile={(file) => {
+                      setSelectedFile(file);
+                    }}
+                    highlightedPaths={highlightedPaths}
+                  />
+                  <DigThroughTime
+                    timeline={analysis.timeline}
+                    onHoverCommit={handleHoverCommit}
+                  />
+                </>
+              )}
 
-              {/* Bottom "Dig through time" Timeline */}
-              <DigThroughTime
-                timeline={analysis.timeline}
-                onHoverCommit={handleHoverCommit}
-              />
+              {/* Hotspots Table View */}
+              {activeTab === 'hotspots' && (
+                <DebtMatrix
+                  files={analysis.files}
+                  selectedFile={selectedFile}
+                  onSelectFile={(file) => {
+                    setSelectedFile(file);
+                  }}
+                  highlightedPaths={highlightedPaths}
+                />
+              )}
+
+              {/* Profiles / Contributor Contention Timeline View */}
+              {activeTab === 'profiles' && (
+                <div className="space-y-5">
+                  <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-2xs">
+                    <h2 className="text-base font-bold font-serif text-zinc-950 mb-1">
+                      Contributor Volatility &amp; Commit Rhythm
+                    </h2>
+                    <p className="text-xs text-zinc-500">
+                      Chronological commits, churn volume, and author distribution across the last {analysis.analyzed_commits} commits.
+                    </p>
+                  </div>
+                  <VolatilityTimeline
+                    timeline={analysis.timeline}
+                    activeRepo={analysis.repo_name}
+                    onHoverCommit={handleHoverCommit}
+                  />
+                </div>
+              )}
+
+              {/* Executive Architectural Report View */}
+              {activeTab === 'report' && (
+                <div className="bg-white border border-zinc-200 rounded-xl p-6 space-y-6 shadow-2xs font-sans">
+                  <div className="border-b border-zinc-100 pb-5 flex items-start justify-between">
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-orange-100 text-orange-800 border border-orange-200 mb-2">
+                        <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                        Executive Architectural Audit
+                      </div>
+                      <h2 className="text-xl font-bold font-serif text-zinc-950">
+                        Codebase Health &amp; Remediation Report
+                      </h2>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Synthesized from {analysis.analyzed_commits} commits across {analysis.total_files} active files in <span className="font-mono text-zinc-800">{analysis.repo_name}</span>.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => window.print()}
+                      className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-md border border-zinc-300 transition-colors"
+                    >
+                      Export / Print
+                    </button>
+                  </div>
+
+                  {/* High Risk Hotspots Summary */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs uppercase tracking-wider font-mono font-bold text-zinc-400 flex items-center gap-2">
+                      <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
+                      Critical Hotspots Requiring Decoupling ({analysis.high_risk_files_count})
+                    </h3>
+                    <div className="divide-y divide-zinc-100 border border-zinc-200 rounded-lg overflow-hidden">
+                      {analysis.files.slice(0, 5).map((file, idx) => (
+                        <div
+                          key={file.path}
+                          onClick={() => {
+                            setSelectedFile(file);
+                            setIsDrawerOpen(true);
+                          }}
+                          className="p-3.5 bg-white hover:bg-orange-50/50 cursor-pointer transition-colors flex items-center justify-between gap-4 group"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className="w-5 h-5 rounded-full bg-zinc-100 text-zinc-600 flex items-center justify-center text-[11px] font-mono font-bold shrink-0">
+                              {idx + 1}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="font-mono text-xs font-semibold text-zinc-900 truncate group-hover:text-orange-700">
+                                {file.path}
+                              </p>
+                              <p className="text-[11px] text-zinc-500">
+                                {file.churn_count} commits • {file.unique_authors} contributors • {file.lines} LOC
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 shrink-0">
+                            <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                              file.debt_score >= 70
+                                ? 'bg-red-100 text-red-700 border border-red-200'
+                                : 'bg-amber-100 text-amber-800 border border-amber-200'
+                            }`}>
+                              Debt: {file.debt_score}/100
+                            </span>
+                            <span className="text-xs text-orange-600 font-mono font-medium flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                              Diagnose <ArrowRight className="w-3 h-3" />
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Remediation Strategy */}
+                  <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
+                    <h3 className="text-xs font-mono font-bold text-zinc-800 uppercase tracking-wider">
+                      Architectural Recommendations
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-zinc-600">
+                      <div className="p-3 bg-white border border-zinc-200 rounded-md">
+                        <p className="font-semibold text-zinc-900 flex items-center gap-1.5 mb-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          Deconstruct God Objects
+                        </p>
+                        <p className="text-[11px] leading-relaxed">
+                          Files with churn over 20 commits and high author counts are acting as central choke-points. Split routing from business handlers.
+                        </p>
+                      </div>
+                      <div className="p-3 bg-white border border-zinc-200 rounded-md">
+                        <p className="font-semibold text-zinc-900 flex items-center gap-1.5 mb-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          Stabilize Shared Contracts
+                        </p>
+                        <p className="text-[11px] leading-relaxed">
+                          Introduce explicit boundary interfaces to prevent concurrent modifications across multiple feature teams.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Sidebar (4 cols): Dark Inspector Card + "What the dig turned up" */}
